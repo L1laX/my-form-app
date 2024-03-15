@@ -79,6 +79,7 @@ export default function Home() {
   }
 
   const getData = async () => {
+    const id = toast.loading('Loading...');
     const result = await axios.get('/api');
     const {
       Education,
@@ -119,6 +120,12 @@ export default function Home() {
     setSkillInfo(Skill);
     setInterestsInfo(Interests);
     setGuildInfo(GuildsInfo);
+    toast.update(id, {
+      render: 'Success',
+      type: 'success',
+      isLoading: false,
+      autoClose: 2000,
+    });
   };
   const fileNames = (i) => {
     const item = i + '';
@@ -224,7 +231,7 @@ export default function Home() {
         setInterestsInfo={setInterestsInfo}
       />
       <Guild guildInfo={guildInfo} setGuildInfo={setGuildInfo} />
-      <ToastContainer />
+      <ToastContainer position="top-center" />
       <footer className=" mt-5 h-5"></footer>
     </main>
   );
