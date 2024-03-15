@@ -20,20 +20,20 @@ export async function GET() {
 }
 
 export async function PUT(req) {
-  const { id, ...res } = await req.json();
-  if (id) {
+  const getOldData = await prisma.userProfile.findMany({});
+  const { userInput, ...res } = await req.json();
+  if (getOldData[0]?.id) {
     await prisma.userProfile.delete({
       where: {
-        id: id,
+        id: getOldData[0].id,
       },
     });
   }
-
   try {
     const result = await prisma.userProfile.create({
       data: {
-        ...res.userInput,
-        startingDate: new Date(res.userInput.startingDate),
+        ...userInput,
+        startingDate: new Date(userInput.startingDate),
         userProfileImage: res.profilePicture,
         userCoverImage: res.coverPicture,
         ...res.contact,

@@ -48,7 +48,7 @@ const Contact = ({ contact, setContact }) => {
               onSelect={handleSelect}
             />
           </div>
-          <div className="district w-1/4 mt-6 xl:mt-0">
+          <div className="district w-1/4 mt-6 md:mt-0">
             <label className="text-[11px] xl:text-sm ">DISTRICT</label>
             <InputThaiAddress.Amphoe
               value={contact['amphoe']}
@@ -56,7 +56,7 @@ const Contact = ({ contact, setContact }) => {
               onSelect={handleSelect}
             />
           </div>
-          <div className="province  w-1/4 mt-6  xl:mt-0">
+          <div className="province  w-1/4 mt-6  md:mt-0">
             <label className="text-[11px] xl:text-sm">PROVINCE</label>
             <InputThaiAddress.Province
               value={contact['province']}

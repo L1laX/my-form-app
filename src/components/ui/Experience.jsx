@@ -1,6 +1,6 @@
 import React from 'react';
 import Timeline from '../common/ExperienceTimeline';
-import Button from '../common/Button';
+
 import PopupModel from '../common/PopupModel';
 const Experience = ({ experienceInfo, setExperienceInfo }) => {
   const deleteItem = (id) => {

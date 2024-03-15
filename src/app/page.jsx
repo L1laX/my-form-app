@@ -12,8 +12,10 @@ import Button from '@/components/common/Button';
 import axios from 'axios';
 import { supabase } from '../libs/supabase';
 import { v4 as uuidv4 } from 'uuid';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 export default function Home() {
-  const [id, setId] = useState(null);
   const [userInput, setUserInput] = useState({
     userName: '',
     nickName: '',
@@ -45,10 +47,17 @@ export default function Home() {
   const [guildInfo, setGuildInfo] = useState([]);
   async function handleSubmit(e) {
     e.preventDefault();
+    const id = toast.loading('Sending...');
+    toast.update(id, {
+      render: `Uploading image ...`,
+    });
     const uploadedProfile = await uploadImage(profilePicture, 'profile');
     const uploadedCover = await uploadImage(coverPicture, 'cover');
+    toast.update(id, {
+      render: `Upload image success`,
+      type: 'success',
+    });
     const data = {
-      id,
       userInput,
       profilePicture: uploadedProfile,
       coverPicture: uploadedCover,
@@ -59,15 +68,19 @@ export default function Home() {
       interestsInfo,
       guildInfo,
     };
-    console.log(data);
-    console.log('Submited');
+    toast.update(id, { render: 'Sending...', type: 'info' });
     const result = await axios.put('/api', data);
+    toast.update(id, {
+      render: 'Success',
+      type: 'success',
+      isLoading: false,
+      autoClose: 2000,
+    });
   }
 
   const getData = async () => {
     const result = await axios.get('/api');
     const {
-      id,
       Education,
       Experience,
       GuildsInfo,
@@ -77,7 +90,6 @@ export default function Home() {
       userCoverImage,
       ...rest
     } = result.data.data;
-    setId(id);
     setUserInput({
       userName: rest.userName,
       nickName: rest.nickName,
@@ -128,7 +140,6 @@ export default function Home() {
   };
   const uploadImage = async (inputImage, type) => {
     if (inputImage === null) {
-      alert('Please select an image');
       return;
     }
     const uploadedImage = [];
@@ -161,7 +172,6 @@ export default function Home() {
         folderName = 'cover';
       }
       try {
-        alert(`Uploading ${type} image ...`);
         const image = await supabase.storage
           .from('Image')
           .upload(`${folderName}/${newFileName}`, inputImage);
@@ -179,7 +189,7 @@ export default function Home() {
       uploadedImage.push(inputImage);
     }
     console.log(uploadedImage);
-    alert(`Upload ${type} image success`);
+
     return uploadedImage[0];
   };
   console.log(userInput.startingDate);
@@ -214,7 +224,7 @@ export default function Home() {
         setInterestsInfo={setInterestsInfo}
       />
       <Guild guildInfo={guildInfo} setGuildInfo={setGuildInfo} />
-
+      <ToastContainer />
       <footer className=" mt-5 h-5"></footer>
     </main>
   );
