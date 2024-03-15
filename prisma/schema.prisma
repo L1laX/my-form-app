@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserProfile {
+  id               String       @id @unique @default(uuid())
+  userName         String?
+  nickName         String?
+  firstName        String?
+  lastName         String?
+  position         String?
+  telephoneNumber  String?
+  nationality      String?
+  userProfileImage String?
+  userCoverImage   String?
+  district         String?
+  amphoe           String?
+  province         String?
+  zipcode          String?
+  addressInfo      String?
+  facebook         String?
+  lineId           String?
+  instagram        String?
+  startingDate     DateTime?    @db.Timestamptz(3)
+  createdAt        DateTime     @default(now())
+  lastUpdateAt     DateTime     @updatedAt @db.Timestamptz(3)
+  Education        Education[]
+  Experience       Experience[]
+  Skill            Skill[]
+  Interests        Interests[]
+  GuildsInfo       GuildsInfo[]
+}
+
+model Education {
+  id        String      @id @unique @default(uuid())
+  userId    String
+  name      String
+  year      Int
+  Education UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Experience {
+  id         String      @id @unique @default(uuid())
+  userId     String
+  name       String
+  yearStart  Int
+  yearEnd    Int
+  position   String
+  Experience UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Skill {
+  id     String      @id @unique @default(uuid())
+  userId String
+  name   String
+  level  Int
+  Skill  UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Interests {
+  id        String      @id @unique @default(uuid())
+  userId    String
+  name      String
+  Interests UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model GuildsInfo {
+  id         String      @id @unique @default(uuid())
+  userId     String
+  name       String
+  GuildsInfo UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
