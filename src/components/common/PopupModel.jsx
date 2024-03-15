@@ -42,7 +42,7 @@ export default function BasicModal({
     <div>
       <Button
         name={name}
-        className="text mx-auto xl:ml-[30rem] appearance-none bg-white border-teal-500 border-2 hover:border-teal-700 hover:text-white"
+        className="text-color mx-auto xl:ml-[30rem] appearance-none bg-white border-teal-500 border-2 hover:border-teal-700 hover:text-white"
         onClick={handleOpen}
       />
       <Modal
