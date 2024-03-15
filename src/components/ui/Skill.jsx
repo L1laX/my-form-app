@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../common/Button';
+import DeleteButton from '../common/DeleteButton';
 import CustomizedProgressBars from '../common/Progressbar';
 import PopupModel from '../common/PopupModel';
 const Skill = ({ skillInfo, setSkillInfo }) => {
@@ -25,16 +25,18 @@ const Skill = ({ skillInfo, setSkillInfo }) => {
           height={300}
         />
       </div>
-      <div className="displaySkill ">
+      <div className="displaySkill">
         {skillInfo.map((item) => {
           return (
             <div key={item.id} className="flex items-center text-teal-500">
-              <div className="flex w-[50rem] gap-52 justify-between ml-[29rem] my-3 items-center">
-                <p className="w-56">{item.name}</p>
-                <p className="w-5">{item.level}</p>
-                <CustomizedProgressBars level={item.level} />
+              <div className="flex w-full xl:w-[50rem] xl:gap-52 justify-between xl:ml-[29rem] my-3 items-center">
+                <p className="w-1/3">{item.name}</p>
+                <p className="w-1/3">{item.level}</p>
+                <span className="w-1/3">
+                  <CustomizedProgressBars level={item.level} />
+                </span>
               </div>
-              <Button
+              <DeleteButton
                 className="text-xl ml-10 bg-red-400 px-2 py-0 rounded-full text-white"
                 onClick={() => deleteItem(item.id)}
                 name={'x'}

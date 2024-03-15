@@ -22,7 +22,7 @@ const Guild = ({ guildInfo, setGuildInfo }) => {
           height={200}
         />
       </div>
-      <div className="displayGuild flex gap-8 ml-[29rem] mt-5">
+      <div className="displayGuild flex gap-8 xl:ml-[29rem] mt-5">
         {guildInfo.map((item) => {
           return (
             <Button

@@ -8,13 +8,13 @@ import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent, {
   timelineOppositeContentClasses,
 } from '@mui/lab/TimelineOppositeContent';
-import Button from './Button';
+import DeleteButton from './DeleteButton';
 export default function OppositeContentTimeline({ data, deleteItem }) {
   return (
     <Timeline
       sx={{
         [`& .${timelineOppositeContentClasses.root}`]: {
-          flex: 0.4,
+          flex: 0.6,
         },
       }}
     >
@@ -33,10 +33,10 @@ export default function OppositeContentTimeline({ data, deleteItem }) {
               <TimelineConnector />
             </TimelineSeparator>
             <TimelineContent>
-              <div className="content flex justify-between w-[20rem]">
+              <div className="content flex justify-between xl:w-[20rem]">
                 {item.name}
-                <Button
-                  className="text-md ml-10 bg-red-400 py-0 px-2 rounded-full text-white"
+                <DeleteButton
+                  className="text-md xl:ml-10 rounded-full text-white"
                   onClick={() => deleteItem(item.id)}
                   name={'x'}
                 />

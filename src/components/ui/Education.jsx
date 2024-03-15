@@ -11,7 +11,7 @@ const Education = ({ educationInfo, setEducationInfo }) => {
     { name: 'name', type: 'text', label: 'University Name' },
   ];
   return (
-    <section className="m-5 p-5 bg-white rounded-lg  mt-20">
+    <section className="m-5 p-5 bg-white rounded-lg mt-20 mx-auto">
       <div className="header-text">
         <h2 className="text-3xl font-bold">EDUCATIONAL INFORMATION</h2>
       </div>

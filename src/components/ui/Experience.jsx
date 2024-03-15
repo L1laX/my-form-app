@@ -14,7 +14,7 @@ const Experience = ({ experienceInfo, setExperienceInfo }) => {
     { name: 'position', type: 'text', label: 'Position' },
   ];
   return (
-    <section className="m-5 p-5 bg-white rounded-lg  mt-20">
+    <section className="m-5 p-5 bg-white rounded-lg  mt-20 ">
       <div className="header-text">
         <h2 className="text-3xl font-bold">EXPERIENCE INFORMATION</h2>
       </div>
@@ -27,7 +27,7 @@ const Experience = ({ experienceInfo, setExperienceInfo }) => {
           height={480}
         />
       </div>
-      <div className="displayExperience ">
+      <div className="displayExperience  ">
         <Timeline data={experienceInfo} deleteItem={deleteItem} />
       </div>
     </section>

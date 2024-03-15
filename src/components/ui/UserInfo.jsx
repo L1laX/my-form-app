@@ -1,7 +1,7 @@
 import React from 'react';
 import Input from '../common/Input';
 import Image from 'next/image';
-import CameraIcon from '../../assets/icons/camera.svg';
+import CameraIcon from '../../asset/icons/camera.svg';
 const UserInfo = ({
   userInput,
   setUserInput,
@@ -10,7 +10,6 @@ const UserInfo = ({
   coverPicture,
   setCoverPicture,
 }) => {
-  console.log(userInput);
   return (
     <section className="m-5 p-5 bg-white rounded-lg">
       <section className="header-text">

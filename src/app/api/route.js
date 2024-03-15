@@ -13,16 +13,5 @@ export async function GET() {
   }
 }
 
-export async function POST(req) {
-  const body = await req.json();
-  try {
-    const result = await prisma.userProfile.create({
-      data: body,
-    });
-    console.log(result);
-    return NextResponse.json({ data: result });
-  } catch (e) {
-    console.log(e);
-    return NextResponse.json({ error: e });
-  }
-}
+
+

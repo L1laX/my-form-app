@@ -3,12 +3,13 @@
 import UserInfo from '@/components/ui/UserInfo';
 import Contact from '@/components/ui/Contact';
 import Education from '@/components/ui/Education';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Experience from '@/components/ui/Experience';
 import Skill from '@/components/ui/Skill';
 import Interests from '@/components/ui/Interests';
 import Guild from '@/components/ui/Guild';
 import Button from '@/components/common/Button';
+import axios from 'axios';
 export default function Home() {
   const [userInput, setUserInput] = useState({
     userName: '',
@@ -68,6 +69,15 @@ export default function Home() {
     const { name, value } = e.target;
     setUserInput({ ...userInput, [name]: value });
   }
+  const getData = async () => {
+    const result = await axios.get('/api');
+    console.log(result);
+  };
+  const uploadImage = async (e) => {};
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <main className="h-screen w-full bg-gray-100">
       <header className="flex w-full justify-end mt-2 pr-5">
