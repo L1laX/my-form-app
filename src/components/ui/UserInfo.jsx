@@ -29,7 +29,13 @@ const UserInfo = ({
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setCoverPicture(e.target.files[0])}
+                  onChange={(e) => {
+                    if (e.target.files[0].size > 2000000) {
+                      alert('File size should be less than 2MB');
+                      return;
+                    }
+                    setCoverPicture(e.target.files[0]);
+                  }}
                   className="hidden"
                 />
                 <p className="text-sm">EDIT COVER PHOTO</p>
@@ -58,7 +64,13 @@ const UserInfo = ({
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setCoverPicture(e.target.files[0])}
+                  onChange={(e) => {
+                    if (e.target.files[0].size > 2000000) {
+                      alert('File size should be less than 2MB');
+                      return;
+                    }
+                    setCoverPicture(e.target.files[0]);
+                  }}
                   className="hidden"
                 />
                 <p className="text-sm">EDIT COVER PHOTO</p>
@@ -80,7 +92,13 @@ const UserInfo = ({
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setProfilePicture(e.target.files[0])}
+                    onChange={(e) => {
+                      if (e.target.files[0].size > 2000000) {
+                        alert('File size should be less than 2MB');
+                        return;
+                      }
+                      setProfilePicture(e.target.files[0]);
+                    }}
                     className="hidden"
                   />
                 </label>
@@ -108,15 +126,21 @@ const UserInfo = ({
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setProfilePicture(e.target.files[0])}
+                    onChange={(e) => {
+                      if (e.target.files[0].size > 2000000) {
+                        alert('File size should be less than 2MB');
+                        return;
+                      }
+                      setProfilePicture(e.target.files[0]);
+                    }}
                     className="hidden"
                   />
                 </label>
               </div>
             )}
           </div>
-          <div className="right-section grid xl:grid-cols-2 grid-cols-1 gap-8 2xl:ml-72 mb-5 mt-5 2xl:mt-0">
-            <div className="username-section">
+          <div className="right-section grid xl:grid-cols-2 grid-cols-1 gap-8 2xl:ml-72 mb-5 mt-5 2xl:mt-0 ">
+            <div className="username-section mx-2 ">
               <label htmlFor="username" className="text-sm">
                 USERNAME
               </label>
@@ -133,7 +157,7 @@ const UserInfo = ({
                 value={userInput?.userName}
               />
             </div>
-            <div className="nickname-section">
+            <div className="nickname-section mx-2">
               <label htmlFor="nickname" className="text-sm">
                 NICKNAME
               </label>
@@ -150,7 +174,7 @@ const UserInfo = ({
                 value={userInput?.nickName}
               />
             </div>
-            <div className="first-name-section">
+            <div className="first-name-section mx-2">
               <label htmlFor="firstName" className="text-sm">
                 FIRST NAME
               </label>
@@ -167,7 +191,7 @@ const UserInfo = ({
                 value={userInput?.firstName}
               />
             </div>
-            <div className="last-name-section">
+            <div className="last-name-section mx-2">
               <label htmlFor="lastName" className="text-sm">
                 LAST NAME
               </label>
@@ -184,7 +208,7 @@ const UserInfo = ({
                 value={userInput?.lastName}
               />
             </div>
-            <div className="position-section">
+            <div className="position-section mx-2">
               <label htmlFor="position" className="text-sm">
                 POSITION
               </label>
@@ -207,7 +231,7 @@ const UserInfo = ({
                 <option value="Project Developer">Project Maneger</option>
               </select>
             </div>
-            <div className="nationality-section">
+            <div className="nationality-section mx-2">
               <label htmlFor="nationality" className="text-sm">
                 NATIONALITY
               </label>
@@ -225,7 +249,7 @@ const UserInfo = ({
                 value={userInput?.nationality}
               />
             </div>
-            <div className="telephone-section">
+            <div className="telephone-section mx-2">
               <label htmlFor="telephoneNumber" className="text-sm">
                 TELEPHONE NUMBER
               </label>
@@ -242,7 +266,7 @@ const UserInfo = ({
                 value={userInput?.telephoneNumber}
               />
             </div>
-            <div className="starting-date-section">
+            <div className="starting-date-section mx-2">
               <label htmlFor="startingDate" className="text-sm">
                 STARTING DATE{' '}
               </label>

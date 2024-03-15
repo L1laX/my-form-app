@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Input from '../common/Input';
-import { useState } from 'react';
 import { CreateInput } from 'thai-address-autocomplete-react';
 const InputThaiAddress = CreateInput();
 const Contact = ({ contact, setContact }) => {
   const handleChange = (scope) => (value) => {
+    if (!value) {
+      setContact((oldAddr) => ({
+        ...oldAddr,
+        [scope]: '',
+        district: '',
+        amphoe: '',
+        province: '',
+        zipcode: '',
+      }));
+    }
     setContact((oldAddr) => ({
       ...oldAddr,
       [scope]: value,
@@ -12,7 +21,7 @@ const Contact = ({ contact, setContact }) => {
   };
 
   const handleSelect = (address) => {
-    setContact(address);
+    setContact({ ...contact, ...address });
   };
 
   return (
@@ -30,25 +39,25 @@ const Contact = ({ contact, setContact }) => {
           }
           value={contact?.addressInfo}
         />
-        <div className="address-info flex flex-row justify-between items-center gap-5 w-full mt-6 ">
-          <div className="sub-distraict  w-1/4">
-            <label className="text-sm">SUB DISTRICT</label>
+        <div className="address-info flex flex-row justify-between items-center gap-3 xl:gap-5 w-full mt-6 ">
+          <div className="sub-distraict  w-1/4 ">
+            <label className="text-[11px] xl:text-sm">SUB DISTRICT</label>
             <InputThaiAddress.District
               value={contact['district']}
               onChange={handleChange('district')}
               onSelect={handleSelect}
             />
           </div>
-          <div className="district w-1/4">
-            <label className="text-sm">DISTRICT</label>
+          <div className="district w-1/4 mt-6 xl:mt-0">
+            <label className="text-[11px] xl:text-sm ">DISTRICT</label>
             <InputThaiAddress.Amphoe
               value={contact['amphoe']}
               onChange={handleChange('amphoe')}
               onSelect={handleSelect}
             />
           </div>
-          <div className="province  w-1/4">
-            <label className="text-sm">PROVINCE</label>
+          <div className="province  w-1/4 mt-6  xl:mt-0">
+            <label className="text-[11px] xl:text-sm">PROVINCE</label>
             <InputThaiAddress.Province
               value={contact['province']}
               onChange={handleChange('province')}
@@ -56,7 +65,7 @@ const Contact = ({ contact, setContact }) => {
             />
           </div>
           <div className="ziplcode  w-1/4">
-            <label className="text-sm">POSTAL CODE</label>
+            <label className="text-[11px] xl:text-sm">POSTAL CODE</label>
             <InputThaiAddress.Zipcode
               value={contact['zipcode']}
               onChange={handleChange('zipcode')}
@@ -64,7 +73,7 @@ const Contact = ({ contact, setContact }) => {
             />
           </div>
         </div>
-        <div className="social-info mt-5 flex items-center justify-between gap-7">
+        <div className="social-info mt-5 flex items-center justify-between gap-2 xl:gap-7">
           <div className="facebook w-1/3">
             <label htmlFor="facebook" className="text-sm">
               FACEBOOK
@@ -75,6 +84,7 @@ const Contact = ({ contact, setContact }) => {
               onChange={(e) =>
                 setContact({ ...contact, [e.target.name]: e.target.value })
               }
+              value={contact?.facebook}
             />
           </div>
           <div className="line w-1/3">
@@ -87,6 +97,7 @@ const Contact = ({ contact, setContact }) => {
               onChange={(e) =>
                 setContact({ ...contact, [e.target.name]: e.target.value })
               }
+              value={contact?.lineId}
             />
           </div>
           <div className="instagram w-1/3">
@@ -99,6 +110,7 @@ const Contact = ({ contact, setContact }) => {
               onChange={(e) =>
                 setContact({ ...contact, [e.target.name]: e.target.value })
               }
+              value={contact?.instagram}
             />
           </div>
         </div>

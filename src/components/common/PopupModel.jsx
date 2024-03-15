@@ -53,9 +53,9 @@ export default function BasicModal({
       >
         <Box sx={style}>
           <form onSubmit={handleSubmit}>
-            {inputs.map((item) => {
+            {inputs.map((item, index) => {
               return (
-                <div key={item.id} className="mt-2">
+                <div key={index} className="mt-2">
                   <label htmlFor={item.name} className="text-sm ml-3">
                     {item.label}
                   </label>

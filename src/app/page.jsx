@@ -10,7 +10,10 @@ import Interests from '@/components/ui/Interests';
 import Guild from '@/components/ui/Guild';
 import Button from '@/components/common/Button';
 import axios from 'axios';
+import { supabase } from '../libs/supabase';
+import { v4 as uuidv4 } from 'uuid';
 export default function Home() {
+  const [id, setId] = useState(null);
   const [userInput, setUserInput] = useState({
     userName: '',
     nickName: '',
@@ -23,58 +26,163 @@ export default function Home() {
   });
   const [profilePicture, setProfilePicture] = useState(null);
   const [coverPicture, setCoverPicture] = useState(null);
+  const [oldProfilePicture, setOldProfilePicture] = useState(null);
+  const [oldCoverPicture, setOldCoverPicture] = useState(null);
   const [contact, setContact] = useState({
+    addressInfo: '',
     district: '',
     amphoe: '',
     province: '',
     zipcode: '',
-    addressInfo: '',
     facebook: '',
     lineId: '',
     instagram: '',
   });
-  const [educationInfo, setEducationInfo] = useState([
-    { id: 1, name: 'University name', year: 1999 },
-    { id: 2, name: 'University name', year: 1999 },
-  ]);
-  const [experienceInfo, setExperienceInfo] = useState([
-    {
-      id: 1,
-      name: 'Coporation name',
-      yearStart: 1999,
-      yearEnd: 2005,
-      position: 'Frontend Developer',
-    },
-    {
-      id: 2,
-      name: 'Coporation name',
-      yearStart: 1999,
-      yearEnd: 2005,
-      position: 'Frontend Developer',
-    },
-  ]);
-  const [skillInfo, setSkillInfo] = useState([
-    { id: 1, name: 'python', level: 7 },
-    { id: 2, name: 'react', level: 5 },
-  ]);
-  const [interestsInfo, setInterestsInfo] = useState([
-    { id: 1, name: 'MUSIC' },
-    { id: 2, name: 'ANIME' },
-  ]);
-  const [guildInfo, setGuildInfo] = useState([
-    { id: 1, name: 'K-POP' },
-    { id: 2, name: 'T-POP' },
-  ]);
-  function handleSubmit(e) {
-    const { name, value } = e.target;
-    setUserInput({ ...userInput, [name]: value });
+  const [educationInfo, setEducationInfo] = useState([]);
+  const [experienceInfo, setExperienceInfo] = useState([]);
+  const [skillInfo, setSkillInfo] = useState([]);
+  const [interestsInfo, setInterestsInfo] = useState([]);
+  const [guildInfo, setGuildInfo] = useState([]);
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const uploadedProfile = await uploadImage(profilePicture, 'profile');
+    const uploadedCover = await uploadImage(coverPicture, 'cover');
+    const data = {
+      id,
+      userInput,
+      profilePicture: uploadedProfile,
+      coverPicture: uploadedCover,
+      contact,
+      educationInfo,
+      experienceInfo,
+      skillInfo,
+      interestsInfo,
+      guildInfo,
+    };
+    console.log(data);
+    console.log('Submited');
+    const result = await axios.put('/api', data);
   }
+
   const getData = async () => {
     const result = await axios.get('/api');
-    console.log(result);
+    const {
+      id,
+      Education,
+      Experience,
+      GuildsInfo,
+      Interests,
+      Skill,
+      userProfileImage,
+      userCoverImage,
+      ...rest
+    } = result.data.data;
+    setId(id);
+    setUserInput({
+      userName: rest.userName,
+      nickName: rest.nickName,
+      firstName: rest.firstName,
+      lastName: rest.lastName,
+      position: rest.position,
+      telephoneNumber: rest.telephoneNumber,
+      nationality: rest.nationality,
+      startingDate: new Date(rest.startingDate).toISOString().slice(0, 10),
+    });
+    setProfilePicture(userProfileImage);
+    setCoverPicture(userCoverImage);
+    setOldProfilePicture(userProfileImage);
+    setOldCoverPicture(userCoverImage);
+    setContact({
+      addressInfo: rest.addressInfo,
+      district: rest.district,
+      amphoe: rest.amphoe,
+      province: rest.province,
+      zipcode: rest.zipcode,
+      facebook: rest.facebook,
+      lineId: rest.lineId,
+      instagram: rest.instagram,
+    });
+    setEducationInfo(Education);
+    setExperienceInfo(Experience);
+    setSkillInfo(Skill);
+    setInterestsInfo(Interests);
+    setGuildInfo(GuildsInfo);
   };
-  const uploadImage = async (e) => {};
-
+  const fileNames = (i) => {
+    const item = i + '';
+    const publicIndex = item.split('/').findIndex((el) => el === 'public');
+    const data = item
+      .split('/')
+      .filter((el, i) => {
+        if (i > publicIndex + 1) {
+          return el;
+        }
+      })
+      .join('/');
+    return data;
+  };
+  const findFolder = (item) => {
+    const arr = fileNames(item).split('/');
+    arr.pop();
+    return arr.join('/');
+  };
+  const uploadImage = async (inputImage, type) => {
+    if (inputImage === null) {
+      alert('Please select an image');
+      return;
+    }
+    const uploadedImage = [];
+    let fileName = '';
+    let folderName = '';
+    const newFileName = uuidv4();
+    console.log(inputImage, typeof inputImage);
+    if (typeof inputImage === 'object') {
+      if (!oldCoverPicture || !oldProfilePicture) {
+        if (type === 'profile') {
+          fileName = fileNames(oldProfilePicture);
+          folderName = findFolder(oldProfilePicture);
+        }
+        if (type === 'cover') {
+          fileName = fileNames(oldCoverPicture);
+          folderName = findFolder(oldCoverPicture);
+        }
+        try {
+          const deleteImage = await supabase.storage
+            .from('Image')
+            .remove(fileName);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      if (!oldProfilePicture && type === 'profile') {
+        folderName = 'profile';
+      }
+      if (!oldCoverPicture && type === 'cover') {
+        folderName = 'cover';
+      }
+      try {
+        alert(`Uploading ${type} image ...`);
+        const image = await supabase.storage
+          .from('Image')
+          .upload(`${folderName}/${newFileName}`, inputImage);
+        if (image?.error) {
+          return console.error(image.error);
+        }
+        const url = supabase.storage
+          .from('Image')
+          .getPublicUrl(image.data.path);
+        uploadedImage.push(url.data.publicUrl);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      uploadedImage.push(inputImage);
+    }
+    console.log(uploadedImage);
+    alert(`Upload ${type} image success`);
+    return uploadedImage[0];
+  };
+  console.log(userInput.startingDate);
   useEffect(() => {
     getData();
   }, []);
@@ -106,6 +214,7 @@ export default function Home() {
         setInterestsInfo={setInterestsInfo}
       />
       <Guild guildInfo={guildInfo} setGuildInfo={setGuildInfo} />
+
       <footer className=" mt-5 h-5"></footer>
     </main>
   );

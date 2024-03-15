@@ -8,7 +8,6 @@ const DeleteButton = ({
   deleteItem,
   id,
 }) => {
-  console.log(id);
   return (
     <button
       className={`bg-teal-500 hover:bg-teal-700 text-white px-2 py-0  font-bold rounded-3xl  ${className} `}
