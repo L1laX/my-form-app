@@ -21,7 +21,7 @@ const Interests = ({ interestsInfo, setInterestsInfo }) => {
           height={200}
         />
       </div>
-      <div className="displayInterests flex gap-8 xl:ml-[29rem] mt-5 flex-wrap md:flex-nowrap">
+      <div className="displayInterests flex gap-8 xl:ml-[29rem] mt-5 flex-wrap ">
         {interestsInfo.map((item) => {
           return (
             <Button
